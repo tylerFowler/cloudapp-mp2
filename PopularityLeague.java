@@ -228,7 +228,7 @@ public class PopularityLeague extends Configured implements Tool {
       Configuraiton conf = ctxt.getConfiguration();
 
       String leaguePath = conf.get("league");
-      leagueStrings = readHDFSFile(leaguePath, conf).split("\n");
+      String[] leagueStrings = readHDFSFile(leaguePath, conf).split("\n");
 
       for (String leagueId : leagueStrings) {
         if (leagueId.trim().isEmpty()) continue;
