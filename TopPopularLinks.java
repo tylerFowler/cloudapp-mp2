@@ -188,7 +188,7 @@ public class TopPopularLinks extends Configured implements Tool {
         }
       }
 
-      for (Pair<Integer, Integer> rankEntry : rankMap) {
+      for (Pair<Integer, Integer> rankEntry : rankMap.descendingSet()) {
         IntWritable pageId = new IntWritable(rankEntry.first);
         IntWritable count = new IntWritable(rankEntry.second);
         ctxt.write(pageId, count);
