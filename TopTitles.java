@@ -162,8 +162,8 @@ public class TopTitles extends Configured implements Tool {
 
         @Override
         public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
-            Integer count = Integer.parseInt(value.toString());
             String word = key.toString();
+            Integer count = Integer.parseInt(value.toString());
 
             wcMap.add(new Pair<Integer, String>(count, word));
 
@@ -202,14 +202,14 @@ public class TopTitles extends Configured implements Tool {
 
               wcMap.add(new Pair<Integer, String>(count, word));
 
-              if (wcMap.size() > 10) {
+              if (wcMap.size() > this.N) {
                 wcMap.remove(wcMap.first());
               }
             }
 
             for (Pair<Integer, String> itm : wcMap) {
-              Text word = new Text(itm.second);
-              IntWritable value = new IntWritable(itm.first);
+              Text word = new Text(itm.first);
+              IntWritable value = new IntWritable(itm.second);
               context.write(word, value);
             }
         }
