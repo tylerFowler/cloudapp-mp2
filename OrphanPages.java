@@ -43,7 +43,7 @@ public class OrphanPages extends Configured implements Tool {
       @Override
       public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
           Integer pageId = Integer.parseInt(key.toString());
-          ArrayList<String> pageLinks = Arrays.asList(value.toString().split(' '));
+          String[] pageLinks = value.toString().split(' ');
           // ensure that this page gets added because it may not be linked to
           context.write(new IntWritable(pageId), new IntWritable(0));
 
@@ -51,7 +51,7 @@ public class OrphanPages extends Configured implements Tool {
           // page has a corresponding page that *links* to it.
           for (String linkIdStr : pageLinks) {
             Integer linkId = Integer.parseInt(linkIdStr.trim());
-            context.write(new IntWritable(link), new IntWritable(1));
+            context.write(new IntWritable(linkId), new IntWritable(1));
           }
       }
     }
@@ -64,7 +64,7 @@ public class OrphanPages extends Configured implements Tool {
             linkBackCount += linkId.get();
           }
 
-          if (!linkBackCount > 0) context.write(key, NulWritable.get());
+          if (linkBackCount == 0) context.write(key, NullWritable.get());
         }
     }
 }
