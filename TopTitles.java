@@ -175,7 +175,7 @@ public class TopTitles extends Configured implements Tool {
         @Override
         protected void cleanup(Context context) throws IOException, InterruptedException {
             for (Pair<Integer, String> itm : wcMap) {
-              String[] strings = { itm.second, itm.first.toString() };
+              String[] strings = { itm.first.toString(), itm.second };
               TextArrayWritable val = new TextArrayWritable(strings);
               context.write(NullWritable.get(), val);
             }
@@ -197,8 +197,8 @@ public class TopTitles extends Configured implements Tool {
             for (TextArrayWritable val : values) {
               Text[] pair = (Text[]) val.toArray();
 
-              String word = pair[0].toString();
-              Integer count = Integer.parseInt(pair[1].toString());
+              String word = pair[1].toString();
+              Integer count = Integer.parseInt(pair[0].toString());
 
               wcMap.add(new Pair<Integer, String>(count, word));
 

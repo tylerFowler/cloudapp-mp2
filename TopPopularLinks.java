@@ -101,6 +101,9 @@ public class TopPopularLinks extends Configured implements Tool {
       Integer pageId = Integer.parseInt(input[0].replace(':', ' ').trim());
       String[] pageLinks = input[1].split(" ");
 
+      // ensure that this page gets added because it may not be linked to
+      context.write(new IntWritable(pageId), new IntWritable(0));
+
       // Flip the format upside down so that each *linked to*
       // page has a corresponding page that *links* to it.
 
@@ -189,8 +192,8 @@ public class TopPopularLinks extends Configured implements Tool {
       }
 
       for (Pair<Integer, Integer> rankEntry : rankMap) {
-        IntWritable pageId = new IntWritable(rankEntry.second);
-        IntWritable count = new IntWritable(rankEntry.first);
+        IntWritable pageId = new IntWritable(rankEntry.first);
+        IntWritable count = new IntWritable(rankEntry.second);
         ctxt.write(pageId, count);
       }
     }
