@@ -35,6 +35,9 @@ public class OrphanPages extends Configured implements Tool {
         job.setMapperClass(LinkCountMap.class);
         job.setReducerClass(OrphanPageReduce.class);
 
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
         job.setJarByClass(OrphanPages.class);
         return job.waitForCompletion(true) ? 0 : 1;
     }
