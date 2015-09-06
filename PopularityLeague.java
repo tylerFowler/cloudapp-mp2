@@ -112,8 +112,8 @@ public class PopularityLeague extends Configured implements Tool {
     FileInputFormat.setInputPaths(leagueJob, ranksTmpPath);
     FileOutputFormat.setOutputPath(leagueJob, resultPath);
 
-    leagueJob.SetInputFormatClass(KeyValueTextInputFormat.class);
-    leagueJob.SetOutputFormatClass(TextOutputFormat.class);
+    leagueJob.setInputFormatClass(KeyValueTextInputFormat.class);
+    leagueJob.setOutputFormatClass(TextOutputFormat.class);
 
     leagueJob.setJarByClass(PopularityLeague.class);
     return leagueJob.waitForCompletion(true) ? 0 : 1;
