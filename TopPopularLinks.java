@@ -143,14 +143,15 @@ public class TopPopularLinks extends Configured implements Tool {
 
     @Override
     public void map(Text key, Text value, Context ctxt) throws IOException, InterruptedException {
-      Integer pageId = Integer.parseInt(key.toString());
       Integer count = Integer.parseInt(value.toString());
+      Integer pageId = Integer.parseInt(key.toString());
 
-      rankMap.add(new Pair<Integer, Integer>(pageId, count));
+      // treeset will sort on Key (pair[0]) so count *then* pageId
+      rankMap.add(new Pair<Integer, Integer>(count, pageId));
 
-      // if (rankMap.size() > this.N) {
-      //   rankMap.remove(rankMap.first());
-      // }
+      if (rankMap.size() > this.N) {
+        rankMap.remove(rankMap.first());
+      }
     }
 
     @Override
@@ -178,9 +179,10 @@ public class TopPopularLinks extends Configured implements Tool {
       for (IntArrayWritable val : values) {
         IntWritable[] rankEntry = (IntWritable[]) val.toArray();
 
-        Integer pageId = rankEntry[0].get();
-        Integer linkBackCount = rankEntry[1].get();
+        Integer linkBackCount = rankEntry[0].get();
+        Integer pageId = rankEntry[1].get();
 
+        // now that we have a shorter list we want to sort by pageId
         rankMap.add(new Pair<Integer, Integer>(pageId, linkBackCount));
 
         if (rankMap.size() > this.N) {
