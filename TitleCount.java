@@ -88,6 +88,7 @@ public class TitleCount extends Configured implements Tool {
 
             while (st.hasMoreTokens()) {
               String title = st.nextToken();
+
               if (!this.stopWords.contains(title.trim().toLowerCase())) {
                 context.write(new Text(title), new IntWritable(1));
               }

@@ -22,3 +22,13 @@ hadoop jar TopTitleStatistics.jar TopTitleStatistics -D stopwords=/mp2/misc/stop
 ```
 hadoop jar OrphanPages.jar OrphanPages /mp2/links /mp2/D-output
 ```
+
+## E. Top Popular Links:
+```
+hadoop jar TopPopularLinks.jar TopPopularLinks -D N=5 /mp2/links /mp2/D-output
+```
+
+## F. Popularity League:
+```
+hadoop jar PopularityLeague.jar PopularityLeague -D league=/mp2/misc/league.txt /mp2/links /mp2/F-output
+```

@@ -126,20 +126,34 @@ public class TopTitleStatistics extends Configured implements Tool {
 
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            // TODO
+          String line = value.toString();
+          StringTokenizer st = new StringTokenizer(line, this.delimiters);
+
+          while (st.hasMoreTokens()) {
+            String title = st.nextToken();
+
+            if (!this.stopWords.contains(title.trim().toLowerCase())) {
+              context.write(new Text(title), new IntWritable(1));
+            }
+          }
         }
     }
 
     public static class TitleCountReduce extends Reducer<Text, IntWritable, Text, IntWritable> {
         @Override
         public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-            // TODO
+          int sum = 0;
+          for (IntWritable val : values) {
+            sum += val.get();
+          }
+
+          context.write(key, new IntWritable(sum));
         }
     }
 
     public static class TopTitlesStatMap extends Mapper<Text, Text, NullWritable, TextArrayWritable> {
         Integer N;
-        // TODO
+        private TreeSet<Pair<Integer, String>> wcMap = new TreeSet<Pair<Integer, String>>();
 
         @Override
         protected void setup(Context context) throws IOException,InterruptedException {
@@ -149,18 +163,29 @@ public class TopTitleStatistics extends Configured implements Tool {
 
         @Override
         public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
-            // TODO
+          Integer count = Integer.parseInt(value.toString());
+          String word = key.toString();
+
+          wcMap.add(new Pair<Integer, String>(count, word));
+
+          if (wcMap.size() > 10) {
+            wcMap.remove(wcMap.first());
+          }
         }
 
         @Override
         protected void cleanup(Context context) throws IOException, InterruptedException {
-            // TODO
+          for (Pair<Integer, String> itm : wcMap) {
+            String[] strings = { itm.second, itm.first.toString() };
+            TextArrayWritable val = new TextArrayWritable(strings);
+            context.write(NullWritable.get(), val);
+          }
         }
     }
 
     public static class TopTitlesStatReduce extends Reducer<NullWritable, TextArrayWritable, Text, IntWritable> {
         Integer N;
-        // TODO
+        private TreeSet<Pair<Integer, String>> wcMap = new TreeSet<Pair<Integer, String>>();
 
         @Override
         protected void setup(Context context) throws IOException,InterruptedException {
@@ -172,7 +197,42 @@ public class TopTitleStatistics extends Configured implements Tool {
         public void reduce(NullWritable key, Iterable<TextArrayWritable> values, Context context) throws IOException, InterruptedException {
             Integer sum, mean, max, min, var;
 
-            // TODO
+            // get our map of word counts
+            for (TextArrayWritable val : values) {
+              Text[] pair = (Text[]) val.toArray();
+
+              String word = pair[0].toString();
+              Integer count = Integer.parseInt(pair[1].toString());
+
+              wcMap.add(new Pair<Integer, String>(count, word));
+
+              if (wcMap.size() > 10) {
+                wcMap.remove(wcMap.first());
+              }
+            }
+
+            // compute the max
+            max = wcMap.descendingSet().first();
+
+            // compute the min
+            min = wcMap.descendingSet().last();
+
+            // compute the sum
+            sum = 0;
+            for (Pair<Integer, String> itm : wcMap) {
+              sum += itm.first;
+            }
+
+            // compute the mean
+            mean = sum / wcMap.size();
+
+            // compute the variance
+            Integer varianceIntermediate = 0;
+            for (Pair<Integer, String> itm : wcMap) {
+              Integer count = itm.first;
+              varianceIntermediate += (count * count) - mean;
+            }
+            var = varianceIntermediate / wcMap.size();
 
             context.write(new Text("Mean"), new IntWritable(mean));
             context.write(new Text("Sum"), new IntWritable(sum));
