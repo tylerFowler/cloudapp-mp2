@@ -65,34 +65,32 @@ public class TopPopularLinks extends Configured implements Tool {
     linkJob.setReducerClass(LinkCountReduce.class);
 
     FileInputFormat.setInputPaths(linkJob, new Path(args[0]));
-    // FileOutputFormat.setOutputPath(linkJob, tmpPath);
-    FileOutputFormat.setOutputPath(linkJob, new Path(args[1]));
+    FileOutputFormat.setOutputPath(linkJob, tmpPath);
 
     linkJob.setJarByClass(TopPopularLinks.class);
-    // linkJob.waitForCompletion(true);
-    return linkJob.waitForCompletion(true) ? 0 : 1;
+    linkJob.waitForCompletion(true);
 
     // Top Link Job Configuration
-    // Job topLinksJob = Job.getInstance(conf, "Top Popular Links");
-    //
-    // topLinksJob.setOutputKeyClass(IntWritable.class);
-    // topLinksJob.setOutputValueClass(IntWritable.class);
-    //
-    // topLinksJob.setMapOutputKeyClass(NullWritable.class);
-    // topLinksJob.setMapOutputValueClass(IntArrayWritable.class);
-    //
-    // topLinksJob.setMapperClass(TopLinksMap.class);
-    // topLinksJob.setReducerClass(TopLinksReduce.class);
-    // topLinksJob.setNumReduceTasks(1);
-    //
-    // FileInputFormat.setInputPaths(topLinksJob, tmpPath);
-    // FileOutputFormat.setOutputPath(topLinksJob, new Path(args[1]));
-    //
-    // topLinksJob.setInputFormatClass(KeyValueTextInputFormat.class);
-    // topLinksJob.setOutputFormatClass(TextOutputFormat.class);
-    //
-    // topLinksJob.setJarByClass(TopPopularLinks.class);
-    // return topLinksJob.waitForCompletion(true) ? 0 : 1;
+    Job topLinksJob = Job.getInstance(conf, "Top Popular Links");
+
+    topLinksJob.setOutputKeyClass(IntWritable.class);
+    topLinksJob.setOutputValueClass(IntWritable.class);
+
+    topLinksJob.setMapOutputKeyClass(NullWritable.class);
+    topLinksJob.setMapOutputValueClass(IntArrayWritable.class);
+
+    topLinksJob.setMapperClass(TopLinksMap.class);
+    topLinksJob.setReducerClass(TopLinksReduce.class);
+    topLinksJob.setNumReduceTasks(1);
+
+    FileInputFormat.setInputPaths(topLinksJob, tmpPath);
+    FileOutputFormat.setOutputPath(topLinksJob, new Path(args[1]));
+
+    topLinksJob.setInputFormatClass(KeyValueTextInputFormat.class);
+    topLinksJob.setOutputFormatClass(TextOutputFormat.class);
+
+    topLinksJob.setJarByClass(TopPopularLinks.class);
+    return topLinksJob.waitForCompletion(true) ? 0 : 1;
   }
 
   public static class LinkCountMap extends Mapper<Object, Text, IntWritable, IntWritable> {
@@ -124,9 +122,6 @@ public class TopPopularLinks extends Configured implements Tool {
 
     @Override
     public void reduce(IntWritable key, Iterable<IntWritable> values, Context ctxt) throws IOException, InterruptedException {
-      // TODO: for some reason this isn't aggregating the count and leaving it
-      // at 1 (sometimes up to two)
-
       Integer linkBackCount = 0;
       for (IntWritable linkId : values) {
         linkBackCount += linkId.get();
@@ -153,9 +148,9 @@ public class TopPopularLinks extends Configured implements Tool {
 
       rankMap.add(new Pair<Integer, Integer>(pageId, count));
 
-      if (rankMap.size() > this.N) {
-        rankMap.remove(rankMap.first());
-      }
+      // if (rankMap.size() > this.N) {
+      //   rankMap.remove(rankMap.first());
+      // }
     }
 
     @Override
@@ -188,9 +183,9 @@ public class TopPopularLinks extends Configured implements Tool {
 
         rankMap.add(new Pair<Integer, Integer>(pageId, linkBackCount));
 
-        if (rankMap.size() > this.N) {
-          rankMap.remove(rankMap.first());
-        }
+        // if (rankMap.size() > this.N) {
+        //   rankMap.remove(rankMap.first());
+        // }
       }
 
       for (Pair<Integer, Integer> rankEntry : rankMap) {
