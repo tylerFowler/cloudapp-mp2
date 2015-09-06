@@ -225,7 +225,7 @@ public class PopularityLeague extends Configured implements Tool {
     @Override
     protected void setup(Context ctxt) throws IOException, InterruptedException {
       // i. build leagues list
-      Configuraiton conf = ctxt.getConfiguration();
+      Configuration conf = ctxt.getConfiguration();
 
       String leaguePath = conf.get("league");
       String[] leagueStrings = readHDFSFile(leaguePath, conf).split("\n");
