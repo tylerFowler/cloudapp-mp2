@@ -219,7 +219,7 @@ public class PopularityLeague extends Configured implements Tool {
   }
 
   public static class LeagueRankMap extends Mapper<Text, Text, NullWritable, IntArrayWritable> {
-    List<Int> leagues;
+    List<Integer> leagues;
     private TreeSet<Pair<Integer, Integer>> rankMap = new TreeSet<Pair<Integer, Integer>>();
 
     @Override
@@ -284,7 +284,7 @@ public class PopularityLeague extends Configured implements Tool {
         Integer pageId = entry.second;
         Integer rank = rankMap.subset(entry, rankMap.last()).size();
 
-        ctxt.write(pageId, rank);
+        ctxt.write(new IntWritable(pageId), new IntWritable(rank));
       }
 
     }
