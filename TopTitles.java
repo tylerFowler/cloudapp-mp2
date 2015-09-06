@@ -168,7 +168,7 @@ public class TopTitles extends Configured implements Tool {
             wcMap.add(new Pair<Integer, String>(count, word));
 
             if (wcMap.size() > 10) {
-              wcMap.remove(wcmap.first());
+              wcMap.remove(wcMap.first());
             }
         }
 
