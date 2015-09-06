@@ -183,7 +183,7 @@ public class TopPopularLinks extends Configured implements Tool {
         Integer pageId = rankEntry[1].get();
 
         // now that we have a shorter list we want to sort by pageId
-        rankMap.add(new Pair<Integer, Integer>(pageId, linkBackCount));
+        rankMap.add(new Pair<Integer, Integer>(linkBackCount, pageId));
 
         if (rankMap.size() > this.N) {
           rankMap.remove(rankMap.first());
@@ -191,8 +191,8 @@ public class TopPopularLinks extends Configured implements Tool {
       }
 
       for (Pair<Integer, Integer> rankEntry : rankMap) {
-        IntWritable pageId = new IntWritable(rankEntry.first);
-        IntWritable count = new IntWritable(rankEntry.second);
+        IntWritable count = new IntWritable(rankEntry.first);
+        IntWritable pageId = new IntWritable(rankEntry.second);
         ctxt.write(pageId, count);
       }
     }
