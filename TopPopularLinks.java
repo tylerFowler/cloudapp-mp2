@@ -102,7 +102,7 @@ public class TopPopularLinks extends Configured implements Tool {
       String[] pageLinks = input[1].split(" ");
 
       // ensure that this page gets added because it may not be linked to
-      context.write(new IntWritable(pageId), new IntWritable(0));
+      ctxt.write(new IntWritable(pageId), new IntWritable(0));
 
       // Flip the format upside down so that each *linked to*
       // page has a corresponding page that *links* to it.
