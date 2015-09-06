@@ -43,7 +43,7 @@ public class OrphanPages extends Configured implements Tool {
       @Override
       public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
           Integer pageId = Integer.parseInt(key.toString());
-          String[] pageLinks = value.toString().split(' ');
+          String[] pageLinks = value.toString().split(" ");
           // ensure that this page gets added because it may not be linked to
           context.write(new IntWritable(pageId), new IntWritable(0));
 
