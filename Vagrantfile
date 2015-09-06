@@ -16,4 +16,10 @@ Vagrant.configure(2) do |config|
     vb.memory = 2048
     vb.cpus = 2
   end
+
+  config.push.define 'ftp' do |push|
+    push.host = '127.0.0.1'
+    push.port = 21
+    push.username = 'vagrant'
+  end
 end
