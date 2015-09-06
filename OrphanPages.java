@@ -55,6 +55,7 @@ public class OrphanPages extends Configured implements Tool {
         // Flip the format upside down so that each *linked to*
         // page has a corresponding page that *links* to it.
         for (String linkIdStr : pageLinks) {
+          if (linkIdStr.isEmpty()) continue;
           Integer linkId = Integer.parseInt(linkIdStr.trim());
           context.write(new IntWritable(linkId), new IntWritable(1));
         }
