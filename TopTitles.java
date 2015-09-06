@@ -208,8 +208,8 @@ public class TopTitles extends Configured implements Tool {
             }
 
             for (Pair<Integer, String> itm : wcMap) {
-              Text word = new Text(itm.first);
-              IntWritable value = new IntWritable(itm.second);
+              Text word = new Text(itm.second);
+              IntWritable value = new IntWritable(itm.first);
               context.write(word, value);
             }
         }
