@@ -26,20 +26,45 @@ public class OrphanPages extends Configured implements Tool {
 
     @Override
     public int run(String[] args) throws Exception {
-        //TODO
+        Job job = Job.getInstance(this.getConf(), "Orphan Pages");
+        job.setOutputKeyClass(Integer.class);
+
+        job.setMapOutputKeyClass(IntWritable.class);
+        job.setMapOutputValueClass(IntWritable.class);
+
+        job.setMapperClass(LinkCountMap.class);
+        job.setReducerClass(OrphanPageReduce.class);
+
+        job.setJarByClass(OrphanPages.class);
+        return job.waitForCompletion(true) ? 0 : 1;
     }
 
     public static class LinkCountMap extends Mapper<Object, Text, IntWritable, IntWritable> {
-        @Override
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            //TODO
-        }
+      @Override
+      public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+          Integer pageId = Integer.parseInt(key.toString());
+          ArrayList<String> pageLinks = Arrays.asList(value.toString().split(' '));
+          // ensure that this page gets added because it may not be linked to
+          context.write(new IntWritable(pageId), new IntWritable(0));
+
+          // Flip the format upside down so that each *linked to*
+          // page has a corresponding page that *links* to it.
+          for (String linkIdStr : pageLinks) {
+            Integer linkId = Integer.parseInt(linkIdStr.trim());
+            context.write(new IntWritable(link), new IntWritable(1));
+          }
+      }
     }
 
     public static class OrphanPageReduce extends Reducer<IntWritable, IntWritable, IntWritable, NullWritable> {
         @Override
         public void reduce(IntWritable key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-            //TODO
+          Integer linkBackCount = 0;
+          for (IntWritable linkId : values) {
+            linkBackCount += linkId.get();
+          }
+
+          if (!linkBackCount > 0) context.write(key, NulWritable.get());
         }
     }
 }
