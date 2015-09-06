@@ -237,7 +237,7 @@ public class PopularityLeague extends Configured implements Tool {
     }
 
     @Override
-    public void map(Text key, Text value, Context ctxt) throws IOException, InterrupedException {
+    public void map(Text key, Text value, Context ctxt) throws IOException, InterruptedException {
       // ii. build page link-back ranks from previous reduce, key: pageId, value: linkback count
       //     filtering out everything except league values
       Integer pageId = Integer.parseInt(key.toString());
@@ -261,7 +261,7 @@ public class PopularityLeague extends Configured implements Tool {
     private TreeSet<Pair<Integer, Integer>> rankMap = new TreeSet<Pair<Integer, Integer>>();
 
     @Override
-    public void reduce(NullWritable key, Iterable<IntArrayWritable> values, Context ctxt) throws IOException, InterrupedException {
+    public void reduce(NullWritable key, Iterable<IntArrayWritable> values, Context ctxt) throws IOException, InterruptedException {
       // iv. get our full list for processing
       for (IntArrayWritable val : values) {
         IntWritable[] rankEntry = (IntWritable[]) val.toArray();
@@ -282,7 +282,7 @@ public class PopularityLeague extends Configured implements Tool {
         // When we are at the bottom we will be getting the subset from
         // this to this so it will be zero
         Integer pageId = entry.second;
-        Integer rank = rankMap.subset(entry, rankMap.last()).size();
+        Integer rank = rankMap.subSet(entry, rankMap.last()).size();
 
         ctxt.write(new IntWritable(pageId), new IntWritable(rank));
       }
