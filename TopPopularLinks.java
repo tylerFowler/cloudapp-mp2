@@ -122,10 +122,10 @@ public class TopPopularLinks extends Configured implements Tool {
 
     @Override
     public void reduce(IntWritable key, Iterable<IntWritable> values, Context ctxt) throws IOException, InterruptedException {
-      Integer linkBackCount = values.get();
-      // for (IntWritable linkId : values) {
-      //   linkBackCount += linkId.get();
-      // }
+      Integer linkBackCount = 0;
+      for (IntWritable linkId : values) {
+        linkBackCount += linkId.get();
+      }
 
       ctxt.write(key, new IntWritable(linkBackCount));
     }
