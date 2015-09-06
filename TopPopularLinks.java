@@ -181,7 +181,7 @@ public class TopPopularLinks extends Configured implements Tool {
         Integer pageId = rankEntry[0];
         Integer linkBackCount = rankEntry[1];
 
-        rankMap.add(new Pair<Integer, Integer>>(pageId, linkBackCount));
+        rankMap.add(new Pair<Integer, Integer>(pageId, linkBackCount));
 
         if (rankMap.size() > this.N) {
           rankMap.remove(rankMap.first());
