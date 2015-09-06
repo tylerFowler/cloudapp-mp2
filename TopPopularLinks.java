@@ -101,9 +101,6 @@ public class TopPopularLinks extends Configured implements Tool {
       Integer pageId = Integer.parseInt(input[0].replace(':', ' ').trim());
       String[] pageLinks = input[1].split(" ");
 
-      // ensure that this page gets added because it may not be linked to
-      ctxt.write(new IntWritable(pageId), new IntWritable(0));
-
       // Flip the format upside down so that each *linked to*
       // page has a corresponding page that *links* to it.
 
@@ -124,11 +121,11 @@ public class TopPopularLinks extends Configured implements Tool {
     // by excluding orphaned pages
 
     @Override
-    public void reduce(IntWritable key, Iterable<IntWritable> values, Context ctxt) throws IOException, InterruptedException {
-      Integer linkBackCount = 0;
-      for (IntWritable linkId : values) {
-        linkBackCount += linkId.get();
-      }
+    public void reduce(IntWritable key, IntWritable values, Context ctxt) throws IOException, InterruptedException {
+      Integer linkBackCount = values.get();
+      // for (IntWritable linkId : values) {
+      //   linkBackCount += linkId.get();
+      // }
 
       ctxt.write(key, new IntWritable(linkBackCount));
     }
