@@ -69,7 +69,7 @@ public class PopularityLeague extends Configured implements Tool {
     linkJob.setReducerClass(LinkCountReduce.class);
 
     FileInputFormat.setInputPaths(linkJob, inputPaths);
-    FileOutputFormat.setOutputPaths(linkJob, linkCountsTmpPath);
+    FileOutputFormat.setOutputPath(linkJob, linkCountsTmpPath);
 
     linkJob.setJarByClass(PopularityLeague.class);
     linkJob.waitForCompletion(true);
@@ -90,8 +90,8 @@ public class PopularityLeague extends Configured implements Tool {
     FileInputFormat.setInputPaths(rankJob, linkCountsTmpPath);
     FileOutputFormat.setOutputPath(rankJob, ranksTmpPath);
 
-    rankJob.setInputFormatClass(KeyValueTextInputFormat.class);
-    rankJob.setOutputFormatClass(KeyValueTextInputFormat.class);
+    // rankJob.setInputFormatClass(KeyValueTextInputFormat.class);
+    // rankJob.setOutputFormatClass(TextOutputFormat.class);
 
     rankJob.setJarByClass(PopularityLeague.class);
     rankJob.waitForCompletion(true);
