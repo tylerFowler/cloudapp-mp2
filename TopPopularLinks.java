@@ -56,13 +56,13 @@ public class TopPopularLinks extends Configured implements Tool {
     fs.delete(tmpPath, true);
 
     // Link Count Job Configuration
-    Job linkJob = Job.getInstanceOf(conf, "Top Popular Links");
+    Job linkJob = Job.getInstance(conf, "Top Popular Links");
 
-    linkJob.setOutputKeyClass(IntWritable);
-    linkJob.setOutputValueClass(IntWritable);
+    linkJob.setOutputKeyClass(IntWritable.class);
+    linkJob.setOutputValueClass(IntWritable.class);
 
     linkJob.setMapperClass(LinkCountMap.class);
-    linkJob.setReducerClass(LinktCountReduce.class);
+    linkJob.setReducerClass(LinkCountReduce.class);
 
     FileInputFormat.setInputPaths(linkJob, new Path(args[0]));
     FileOutputFormat.setOutputPath(linkJob, tmpPath);
@@ -71,7 +71,7 @@ public class TopPopularLinks extends Configured implements Tool {
     linkJob.waitForCompletion(true);
 
     // Top Link Job Configuration
-    Job topLinksJob = Job.getInstanceOf(conf, "Top Popular Links");
+    Job topLinksJob = Job.getInstance(conf, "Top Popular Links");
 
     topLinksJob.setOutputKeyClass(IntWritable.class);
     topLinksJob.setOutputValueClass(IntWritable.class);
@@ -141,7 +141,7 @@ public class TopPopularLinks extends Configured implements Tool {
         this.N = conf.getInt("N", 10);
     }
 
-    @override
+    @Override
     public void map(Text key, Text value, Context ctxt) throws IOException, InterruptedException {
       Integer pageId = Integer.parseInt(key.toString());
       Integer count = Integer.parseInt(value.toString());
