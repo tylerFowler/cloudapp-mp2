@@ -45,7 +45,7 @@ public class OrphanPages extends Configured implements Tool {
     public static class LinkCountMap extends Mapper<Object, Text, IntWritable, IntWritable> {
       @Override
       public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-          Integer pageId = Integer.parseInt(key.toString());
+          Integer pageId = Integer.parseInt(key.toString().trim().replace(':', ''));
           String[] pageLinks = value.toString().split(" ");
           // ensure that this page gets added because it may not be linked to
           context.write(new IntWritable(pageId), new IntWritable(0));
