@@ -124,7 +124,7 @@ public class TopPopularLinks extends Configured implements Tool {
     public void reduce(IntWritable key, Iterable<IntWritable> values, Context ctxt) throws IOException, InterruptedException {
       Integer linkBackCount = 0;
       for (IntWritable linkId : values) {
-        System.out.println("CONSOLE LOG")
+        System.out.println("CONSOLE LOG");
         linkBackCount += linkId.get();
       }
 
