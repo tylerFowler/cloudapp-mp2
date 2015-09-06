@@ -219,7 +219,7 @@ public class PopularityLeague extends Configured implements Tool {
   }
 
   public static class LeagueRankMap extends Mapper<Text, Text, NullWritable, IntArrayWritable> {
-    List<Integer> leagues;
+    List<Integer> leagues = new List<Integer>();
     private TreeSet<Pair<Integer, Integer>> rankMap = new TreeSet<Pair<Integer, Integer>>();
 
     @Override
