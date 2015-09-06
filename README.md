@@ -25,7 +25,7 @@ hadoop jar OrphanPages.jar OrphanPages /mp2/links /mp2/D-output
 
 #### E. Top Popular Links:
 ```
-hadoop jar TopPopularLinks.jar TopPopularLinks -D N=5 /mp2/links /mp2/D-output
+hadoop jar TopPopularLinks.jar TopPopularLinks -D N=5 /mp2/links /mp2/E-output
 ```
 
 ## F. Popularity League:

@@ -108,7 +108,7 @@ public class TopPopularLinks extends Configured implements Tool {
       // this is a popularity contest we don't care, and even better,
       // it makes the reducer dataset smaller
       for (String linkIdStr : pageLinks) {
-        if (linkIdStr.isEmpty()) continue;
+        if (linkIdStr.trim().isEmpty()) continue;
         Integer linkId = Integer.parseInt(linkIdStr.trim());
         ctxt.write(new IntWritable(linkId), new IntWritable(1));
       }
@@ -156,7 +156,7 @@ public class TopPopularLinks extends Configured implements Tool {
     @Override
     protected void cleanup(Context ctxt) throws IOException, InterruptedException {
       for (Pair<Integer, Integer> itm : rankMap) {
-        Integer [] entry = { itm.first, itm.second };
+        Integer[] entry = { itm.first, itm.second };
         IntArrayWritable entryArr = new IntArrayWritable(entry);
         ctxt.write(NullWritable.get(), entryArr);
       }
@@ -188,9 +188,9 @@ public class TopPopularLinks extends Configured implements Tool {
         }
       }
 
-      for (Pair<Integer, Integer> rankEntry : rankMap.descendingSet()) {
-        IntWritable pageId = new IntWritable(rankEntry.first);
-        IntWritable count = new IntWritable(rankEntry.second);
+      for (Pair<Integer, Integer> rankEntry : rankMap) {
+        IntWritable pageId = new IntWritable(rankEntry.second);
+        IntWritable count = new IntWritable(rankEntry.first;
         ctxt.write(pageId, count);
       }
     }
