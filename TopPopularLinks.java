@@ -176,10 +176,10 @@ public class TopPopularLinks extends Configured implements Tool {
     @Override
     public void reduce(NullWritable key, Iterable<IntArrayWritable> values, Context ctxt) throws IOException, InterruptedException {
       for (IntArrayWritable val : values) {
-        Integer[] rankEntry = (Integer[]) val.toArray();
+        IntWritable[] rankEntry = (IntWritable[]) val.toArray();
 
-        Integer pageId = rankEntry[0];
-        Integer linkBackCount = rankEntry[1];
+        Integer pageId = rankEntry[0].get();
+        Integer linkBackCount = rankEntry[1].get();
 
         rankMap.add(new Pair<Integer, Integer>(pageId, linkBackCount));
 
