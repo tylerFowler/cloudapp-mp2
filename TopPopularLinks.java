@@ -71,7 +71,7 @@ public class TopPopularLinks extends Configured implements Tool {
     linkJob.waitForCompletion(true);
 
     // Top Link Job Configuration
-    topLinksJob = Job.getInstanceOf(conf, "Top Popular Links");
+    Job topLinksJob = Job.getInstanceOf(conf, "Top Popular Links");
 
     topLinksJob.setOutputKeyClass(IntWritable.class);
     topLinksJob.setOutputValueClass(IntWritable.class);
