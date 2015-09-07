@@ -212,33 +212,42 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
 
             // compute the max
-            max = wcMap.last().first;
+            Double maxDbl = Math.floor(wcMap.last().first);
+            max = mxDbl.intValue();
 
             // compute the min
-            min = wcMap.first().first;
+            Double minDbl = Math.floor(wcMap.first().first);
+            min = minDbl.intValue();
 
             // compute the sum
-            sum = 0;
+            Double sumDbl = 0.0;
             for (Pair<Integer, String> itm : wcMap) {
-              sum += itm.first;
+              sumDbl += itm.first;
             }
+
+            Double sumDblFloor = Math.floor(sumDbl);
+            sum = sumDblFloor.intValue();
 
             // compute the mean
-            mean = sum / wcMap.size();
+            Double meanDbl = sumDbl / Math.floor(wcMap.size());
+            Double meanDblFloor = Math.floor(meanDbl);
+            mean = meanDblFloor.intValue();
 
             // compute the variance
-            Integer varianceIntermediate = 0;
+            Double varianceIntermediate = 0.0;
             for (Pair<Integer, String> itm : wcMap) {
-              Integer count = itm.first;
-              varianceIntermediate += (count * count) - mean;
+              Double count = Math.floor(itm.first);
+              varianceIntermediate += (count * count) - meanDbl;
             }
-            var = varianceIntermediate / wcMap.size();
+            Double varDbl = varianceIntermediate / wcMap.size();
+            Double varDblFloor = Math.floor(varDbl);
+            var = varDblFloor.intValue()
 
-            context.write(new Text("Mean"), new IntWritable((Integer)Math.floor(mean)));
-            context.write(new Text("Sum"), new IntWritable((Integer)Math.floor(sum)));
-            context.write(new Text("Min"), new IntWritable((Integer)Math.floor(min)));
-            context.write(new Text("Max"), new IntWritable((Integer)Math.floor(max)));
-            context.write(new Text("Var"), new IntWritable((Integer)Math.floor(var)));
+            context.write(new Text("Mean"), new IntWritable(mean));
+            context.write(new Text("Sum"), new IntWritable(sum));
+            context.write(new Text("Min"), new IntWritable(min));
+            context.write(new Text("Max"), new IntWritable(max));
+            context.write(new Text("Var"), new IntWritable(var));
         }
     }
 
