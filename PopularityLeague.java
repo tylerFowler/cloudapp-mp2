@@ -282,7 +282,7 @@ public class PopularityLeague extends Configured implements Tool {
         // When we are at the bottom we will be getting the subset from
         // this to this so it will be zero
         Integer pageId = entry.second;
-        Integer rank = rankMap.subSet(entry, rankMap.last()).size();
+        Integer rank = rankMap.subSet(entry, rankMap.last()).size() - rankMap.size();
 
         ctxt.write(new IntWritable(pageId), new IntWritable(rank));
       }
