@@ -133,7 +133,7 @@ public class TopTitles extends Configured implements Tool {
             String title = st.nextToken();
 
             if (!this.stopWords.contains(title.trim().toLowerCase())) {
-              context.write(new Text(title), new IntWritable(1));
+              context.write(new Text(title.trim().toLowerCase()), new IntWritable(1));
             }
           }
         }
