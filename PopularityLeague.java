@@ -275,7 +275,7 @@ public class PopularityLeague extends Configured implements Tool {
       // v. do the rank calculation & sort via rankMap where pair = {count, pageId}
       // note that rankMap.descendingSet() will return ranks from highest link count
       // to lowest link count
-      for (Pair<Integer, Integer> entry : rankMap.descendingSet()) {
+      for (Pair<Integer, Integer> entry : rankMap) {
         // if we take the subset of a sorted set in desc. order from this
         // element to the bottom, the size of such set represents how many
         // elements we have that are lower than this one.
