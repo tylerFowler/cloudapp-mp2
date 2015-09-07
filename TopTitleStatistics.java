@@ -241,7 +241,7 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
             Double varDbl = varianceIntermediate / wcMap.size();
             Double varDblFloor = Math.floor(varDbl);
-            var = varDblFloor.intValue()
+            var = varDblFloor.intValue();
 
             context.write(new Text("Mean"), new IntWritable(mean));
             context.write(new Text("Sum"), new IntWritable(sum));
