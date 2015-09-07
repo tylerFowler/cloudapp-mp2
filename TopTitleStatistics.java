@@ -213,7 +213,7 @@ public class TopTitleStatistics extends Configured implements Tool {
 
             // compute the max
             Double maxDbl = Math.floor(wcMap.last().first);
-            max = mxDbl.intValue();
+            max = maxDbl.intValue();
 
             // compute the min
             Double minDbl = Math.floor(wcMap.first().first);
