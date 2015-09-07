@@ -292,7 +292,7 @@ public class PopularityLeague extends Configured implements Tool {
 
         // we only need to check on this element and down since the list is already
         // sorted by count descending
-        for (Pair<Integer, Integer> itrEntry : rankMap.descendingSet().subSet(entry, rankMap.last())) {
+        for (Pair<Integer, Integer> itrEntry : rankMap) {
           if (itrEntry.first < entry.first) rank += 1;
         }
 
