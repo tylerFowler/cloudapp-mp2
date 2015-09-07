@@ -104,7 +104,9 @@ public class TitleCount extends Configured implements Tool {
               sum += val.get();
             }
 
-            context.write(key, new IntWritable(sum));
+            String word = key.toString().toLowerCase();
+
+            context.write(new Text(word), new IntWritable(sum));
         }
     }
 }
