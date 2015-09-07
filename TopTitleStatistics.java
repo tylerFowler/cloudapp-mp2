@@ -234,11 +234,11 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
             var = varianceIntermediate / wcMap.size();
 
-            context.write(new Text("Mean"), new IntWritable(Math.floor(mean).intValue()));
-            context.write(new Text("Sum"), new IntWritable(Math.floor(sum).intValue()));
-            context.write(new Text("Min"), new IntWritable(Math.floor(min).intValue()));
-            context.write(new Text("Max"), new IntWritable(Math.floor(max).intValue()));
-            context.write(new Text("Var"), new IntWritable(Math.floor(var).intValue()));
+            context.write(new Text("Mean"), new IntWritable((Integer)Math.floor(mean)));
+            context.write(new Text("Sum"), new IntWritable((Integer)Math.floor(sum)));
+            context.write(new Text("Min"), new IntWritable((Integer)Math.floor(min)));
+            context.write(new Text("Max"), new IntWritable((Integer)Math.floor(max)));
+            context.write(new Text("Var"), new IntWritable((Integer)Math.floor(var)));
         }
     }
 
