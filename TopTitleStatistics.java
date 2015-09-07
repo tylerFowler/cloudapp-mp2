@@ -237,7 +237,7 @@ public class TopTitleStatistics extends Configured implements Tool {
             Double varianceIntermediate = 0.0;
             for (Pair<Integer, String> itm : wcMap) {
               Double count = Math.floor(itm.first);
-              varianceIntermediate += (count * count) - meanDbl;
+              varianceIntermediate += (count * count) - (meanDbl * meanDbl);
             }
             Double varDbl = varianceIntermediate / wcMap.size();
             Double varDblFloor = Math.floor(varDbl);
