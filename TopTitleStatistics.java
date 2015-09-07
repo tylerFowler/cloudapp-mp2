@@ -212,10 +212,10 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
 
             // compute the max
-            max = wcMap.first().first;
+            max = wcMap.last().first;
 
             // compute the min
-            min = wcMap.last().first;
+            min = wcMap.first().first;
 
             // compute the sum
             sum = 0;
@@ -234,11 +234,11 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
             var = varianceIntermediate / wcMap.size();
 
-            context.write(new Text("Mean"), new IntWritable(mean));
-            context.write(new Text("Sum"), new IntWritable(sum));
-            context.write(new Text("Min"), new IntWritable(min));
-            context.write(new Text("Max"), new IntWritable(max));
-            context.write(new Text("Var"), new IntWritable(var));
+            context.write(new Text("Mean"), new IntWritable(Math.floor(mean)));
+            context.write(new Text("Sum"), new IntWritable(Math.floor(sum)));
+            context.write(new Text("Min"), new IntWritable(Math.floor(min)));
+            context.write(new Text("Max"), new IntWritable(Math.floor(max)));
+            context.write(new Text("Var"), new IntWritable(Math.floor(var)));
         }
     }
 
