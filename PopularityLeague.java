@@ -275,14 +275,26 @@ public class PopularityLeague extends Configured implements Tool {
       // v. do the rank calculation & sort via rankMap where pair = {count, pageId}
       // note that rankMap.descendingSet() will return ranks from highest link count
       // to lowest link count
+      TreeSet<Pair<Integer, Integer>> pageRankMap = new TreeSet<Pair<Integer, Integer>>();
       for (Pair<Integer, Integer> entry : rankMap) {
         // if we take the subset of a sorted set in desc. order from this
         // element to the bottom, the size of such set represents how many
         // elements we have that are lower than this one.
         // When we are at the bottom we will be getting the subset from
         // this to this so it will be zero
+
+        // TODO this doesn't account for two entries with the same count
+        // but otherwise.. it's a nice solution
+        // Integer rank = rankMap.size() - rankMap.subSet(entry, rankMap.last()).size() - 1;
+
         Integer pageId = entry.second;
-        Integer rank = rankMap.size() - rankMap.subSet(entry, rankMap.last()).size() - 1;
+        Integer rank = 0;
+
+        // we only need to check on this element and down since the list is already
+        // sorted by count descending
+        for (Pair<Integer, Integer> itrEntry : rankMap.subSet(entry, rankMap.last())) {
+          if (itrEntry.first < entry.first) rank += 1;
+        }
 
         ctxt.write(new IntWritable(pageId), new IntWritable(rank));
       }
