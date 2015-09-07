@@ -212,10 +212,10 @@ public class TopTitleStatistics extends Configured implements Tool {
             }
 
             // compute the max
-            max = wcMap.descendingSet().first().first;
+            max = wcMap.first().first;
 
             // compute the min
-            min = wcMap.descendingSet().last().first;
+            min = wcMap.last().first;
 
             // compute the sum
             sum = 0;
